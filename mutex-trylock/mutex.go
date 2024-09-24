@@ -1,8 +1,10 @@
 package main
 
 import (
+	"fmt"
 	"sync"
 	"sync/atomic"
+	"time"
 	"unsafe"
 )
 
@@ -63,4 +65,26 @@ func (m *Mutex) IsWoken() bool {
 func (m *Mutex) IsStarving() bool {
 	state := atomic.LoadInt32((*int32)(unsafe.Pointer(&m.Mutex)))
 	return state&mutexStarving == mutexStarving
+}
+
+// LockWithTimeout 尝试在指定的超时时间内获取锁
+func (m *Mutex) LockWithTimeout(timeout time.Duration) error {
+	timer := time.NewTimer(timeout)
+	defer timer.Stop()
+
+	ch := make(chan struct{}, 1)
+
+	go func() {
+		m.Lock()
+		ch <- struct{}{}
+	}()
+
+	select {
+	case <-ch:
+		// 成功获取到锁
+		return nil
+	case <-timer.C:
+		// 超时未获取到锁，返回错误
+		return fmt.Errorf("获取锁超时")
+	}
 }
