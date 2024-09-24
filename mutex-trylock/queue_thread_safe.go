@@ -21,11 +21,13 @@ func (q *SliceQueue) Enqueue(v any) {
 // Dequeue 移去队头并返回
 func (q *SliceQueue) Dequeue() any {
 	q.mu.Lock()
-	defer q.mu.Unlock()
+	// defer q.mu.Unlock()
 	if len(q.data) == 0 {
+		q.mu.Unlock() // 写两次 unlock 可以尽早释放锁
 		return nil
 	}
 	v := q.data[0]
 	q.data = q.data[1:]
+	q.mu.Unlock()
 	return v
 }
