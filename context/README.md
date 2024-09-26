@@ -52,3 +52,7 @@ type Context interface {
 ## Tips
 
 ![context](https://static001.geekbang.org/resource/image/2d/2b/2dcbb1ca54c31b4f3e987b602a38e82b.jpg?wh=2250*2441)
+
+## Note
+
+- 可以参考飞雪无情的 [context 笔记](https://www.flysnow.org/2017/05/12/go-in-action-go-context)
