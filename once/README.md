@@ -12,6 +12,11 @@
 2. 未初始化成功
    - 解决方法: 自己实现一个 Once, 在 do 的时候返回 error
 
+## slowXXX 方法
+
+- 好处: 抽取出 fast path 和 slow path
+- 这种设计模式通过将复杂或开销较大的操作从快速路径（fast path）中抽取出来单独处理，确保常见的操作路径尽可能高效
+
 ## Tips
 
 ![once](https://static001.geekbang.org/resource/image/4b/ba/4b1721a63d7bd3f3995eb18cee418fba.jpg?wh=2250*880)
